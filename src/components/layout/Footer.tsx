@@ -5,7 +5,7 @@ import { ChevronRight, Shield } from 'lucide-react';
 export const Footer: React.FC = () => {
   return (
     <footer className="mt-auto border-t border-slate-200 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-6 pb-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="space-y-1.5">
           <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
             <span>PawLink 毛孩領養與照護平台</span>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { resolveScreenMeta } from '../../config/screens';
 import { ZONE_THEMES } from '../../config/theme';
 import { FloatingScreenBadge } from './FloatingScreenBadge';
@@ -14,6 +14,14 @@ interface AppLayoutProps {
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    if (window.history.state && typeof window.history.state.idx === 'number' && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
   const screen = resolveScreenMeta(location.pathname, location.search);
   const theme = ZONE_THEMES[screen.zone];
 
@@ -32,27 +40,19 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-6 pb-20">
         {/* Presentation Header + Breadcrumb */}
         <div className="mb-6 space-y-3">
-          {/* Breadcrumb */}
-          <nav aria-label="麵包屑導覽" className="flex flex-wrap items-center gap-1.5 text-sm font-medium text-slate-600">
-            {screen.breadcrumbs.map((crumb, idx) => {
-              const isLast = idx === screen.breadcrumbs.length - 1;
-              return (
-                <React.Fragment key={`${crumb.label}-${idx}`}>
-                  {idx > 0 && <ChevronRight className="h-4 w-4 text-slate-400" />}
-                  {crumb.to && !isLast ? (
-                    <Link
-                      to={crumb.to}
-                      className="hover:text-slate-950 hover:underline transition-colors"
-                    >
-                      {crumb.label}
-                    </Link>
-                  ) : (
-                    <span className={isLast ? 'text-slate-950 font-bold' : ''}>{crumb.label}</span>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </nav>
+          {/* Back Button */}
+          {location.pathname !== '/' && (
+            <div>
+              <button
+                type="button"
+                onClick={handleGoBack}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 hover:text-slate-950 border border-slate-200 shadow-2xs text-sm font-bold transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                <span>上一頁</span>
+              </button>
+            </div>
+          )}
 
           {/* Screen Title Banner matching PDF slide header */}
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 bg-white rounded-2xl p-5 sm:p-6 border border-slate-200 shadow-sm">
