@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: 'Noto Sans TC', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #f8fafc;
+    color: #0f172a;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+}
+
+/* UI-00.01 Typography & High-Contrast Zone Tokens */
+:root {
+  --zone-portal-nav: #0f2b36;
+  --zone-portal-primary: #0f2b36;
+  --zone-adopt-primary: #f57c00;
+  --zone-adopt-cta: #b45309;
+  --zone-adopt-nav: #9a4100;
+  --zone-adopt-soft: #fff3e0;
+  --zone-care-primary: #1565c0;
+  --zone-care-nav: #0d3c78;
+  --zone-care-soft: #eef4ff;
+  --zone-org-primary: #0f6b5b;
+  --zone-org-nav: #0a4d41;
+  --zone-org-soft: #e6f4f1;
+}
+
+.heading-main {
+  font-size: clamp(2rem, 3vw, 2.5rem); /* >= 24pt (32px) */
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.heading-section {
+  font-size: 1.5rem; /* 24px / 18pt */
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.text-action {
+  font-size: 1rem; /* 16px / 12pt - 16pt range */
+  font-weight: 600;
+}
