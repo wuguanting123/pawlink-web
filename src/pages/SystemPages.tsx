@@ -148,3 +148,271 @@ export const OverviewPage: React.FC = () => {
     </div>
   );
 };
+
+/* ════════════════════════════════════════════════════════════════
+   UI-90.01  FlowsPage  /flows
+════════════════════════════════════════════════════════════════ */
+export const FlowsPage: React.FC = () => {
+  const flows = [
+    {
+      title: '路徑 A：認養毛孩完整流程',
+      color: '#F57C00',
+      steps: [
+        { label: '首頁', path: '/' },
+        { label: '探索列表', path: '/adopt' },
+        { label: '動物履歷', path: '/adopt/pet/A-0001' },
+        { label: '認養申請總覽', path: '/adopt/apply/A-0001' },
+        { label: '聯繫意願', path: '/adopt/apply/A-0001/contact' },
+        { label: 'KYC 上傳', path: '/adopt/apply/A-0001/kyc' },
+        { label: '環境評估', path: '/adopt/apply/A-0001/environment' },
+        { label: '教育訓練', path: '/adopt/apply/A-0001/education' },
+        { label: '合約簽署', path: '/adopt/apply/A-0001/contract' },
+        { label: '帶回確認', path: '/adopt/apply/A-0001/handover' },
+        { label: '照護儀表板', path: '/care/dashboard' },
+      ],
+    },
+    {
+      title: '路徑 B：私人送養完整流程',
+      color: '#B45309',
+      steps: [
+        { label: '首頁', path: '/' },
+        { label: '送養入口', path: '/adopt/rehome' },
+        { label: '基本資料', path: '/adopt/rehome/basic' },
+        { label: '健康個性', path: '/adopt/rehome/health' },
+        { label: '照片隱私', path: '/adopt/rehome/media' },
+        { label: '預覽送審', path: '/adopt/rehome/preview' },
+        { label: '我的送養', path: '/adopt/rehome/cases' },
+        { label: '刊登管理', path: '/adopt/rehome/manage' },
+      ],
+    },
+    {
+      title: '路徑 C：飼主照護追蹤流程',
+      color: '#1565C0',
+      steps: [
+        { label: '照護儀表板', path: '/care/dashboard' },
+        { label: '每日填寫', path: '/care/log/new' },
+        { label: '日曆回顧', path: '/care/log/history' },
+        { label: '健康時間軸', path: '/care/health' },
+        { label: 'Care Score', path: '/care/score' },
+        { label: 'Care Points', path: '/care/points' },
+        { label: '點數兌換', path: '/care/rewards' },
+        { label: '確認兌換', path: '/care/rewards/confirm' },
+        { label: '兌換完成', path: '/care/rewards/result' },
+      ],
+    },
+    {
+      title: '路徑 D：機構通知互動流程（UI-90.03）',
+      color: '#0F6B5B',
+      steps: [
+        { label: '機構工作台', path: '/organization' },
+        { label: '搜尋飼主', path: '/organization/contacts' },
+        { label: '撰寫通知', path: '/organization/messages/new' },
+        { label: '確認發送', path: '/organization/messages/confirm' },
+        { label: '發送紀錄', path: '/organization/messages/history' },
+        { label: '對話詳情', path: '/organization/messages/MSG-008' },
+        { label: '飼主收件匣', path: '/care/messages' },
+        { label: '通知詳情', path: '/care/messages/MSG-008' },
+        { label: '飼主回覆', path: '/care/messages/MSG-008/reply' },
+      ],
+    },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-10">
+      <div>
+        <h1 className="text-3xl font-extrabold text-slate-900">UI-90.01 操作流程圖</h1>
+        <p className="text-gray-500 mt-1">點擊任一步驟節點可直接跳轉至對應頁面</p>
+      </div>
+      {flows.map(flow => (
+        <div key={flow.title} className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+          <h2 className="font-bold text-lg mb-4" style={{ color: flow.color }}>{flow.title}</h2>
+          <div className="flex flex-wrap items-center gap-2">
+            {flow.steps.map((step, i) => (
+              <React.Fragment key={step.path}>
+                <a href={step.path} className="px-4 py-2 rounded-xl font-semibold text-sm text-white hover:opacity-80 transition-opacity" style={{ backgroundColor: flow.color }}>
+                  {step.label}
+                </a>
+                {i < flow.steps.length - 1 && <span className="text-gray-400">→</span>}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ════════════════════════════════════════════════════════════════
+   UI-90.02  RulesPage  /rules
+════════════════════════════════════════════════════════════════ */
+export const RulesPage: React.FC = () => {
+  const rules = [
+    { screen: 'UI-01.00 首頁', state: '未登入訪客', action: '點擊「我要認養」', result: '自由瀏覽至 /adopt', next: '/adopt' },
+    { screen: 'UI-02.03 動物履歷', state: '未登入訪客', action: '點擊「我要認養」', result: '→ /login?redirect=...', next: '/login' },
+    { screen: 'UI-02.03 動物履歷', state: '未登入訪客', action: '點擊「加入收藏」', result: '→ /login?redirect=...', next: '/login' },
+    { screen: 'UI-02.17 我的認養', state: '飼主角色', action: 'KYC 審核中', result: '顯示狀態徽章，不可操作', next: '-' },
+    { screen: 'UI-02.17 我的認養', state: '飼主角色', action: '待補件狀態', result: '顯示「補件」按鈕 → 跳通知', next: '/notifications' },
+    { screen: 'UI-03.01 照護儀表板', state: '飼主角色', action: '今日未填', result: '顯示 3/4 進度條與提醒卡', next: '/care/log/new' },
+    { screen: 'UI-03.02 每日填寫', state: '重複送出', action: '欄位與昨日完全相同', result: '顯示重複警告，二次確認', next: '-' },
+    { screen: 'UI-03.11 兌換獎勵', state: '點數不足', action: '點擊兌換', result: '顯示「點數不足」提示', next: '-' },
+    { screen: 'UI-04.09 聯絡通知', state: '機構管理員', action: '發送通知', result: '→ 撰寫 → 確認 → 發送 → 歷史', next: '/organization/messages/history' },
+    { screen: 'UI-04.03 KYC 審核', state: '機構管理員', action: '核准通過', result: '飼主端案件狀態即時同步', next: '/organization/kyc' },
+    { screen: '任意受保護頁面', state: '未登入訪客', action: '直接訪問', result: '→ /login?redirect=<path>', next: '/login' },
+  ];
+
+  return (
+    <div className="max-w-5xl mx-auto space-y-6">
+      <div>
+        <h1 className="text-3xl font-extrabold text-slate-900">UI-90.02 狀態與返回規則</h1>
+        <p className="text-gray-500 mt-1">各畫面在不同角色與狀態下的操作結果對照表</p>
+      </div>
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <table className="w-full text-sm">
+          <thead className="bg-slate-50">
+            <tr>
+              <th className="text-left px-5 py-3 font-semibold text-slate-600">畫面</th>
+              <th className="text-left px-5 py-3 font-semibold text-slate-600">角色 / 狀態</th>
+              <th className="text-left px-5 py-3 font-semibold text-slate-600">操作</th>
+              <th className="text-left px-5 py-3 font-semibold text-slate-600">結果</th>
+              <th className="text-left px-5 py-3 font-semibold text-slate-600">跳轉</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rules.map((r, i) => (
+              <tr key={i} className="border-t border-slate-100 hover:bg-slate-50">
+                <td className="px-5 py-3 font-medium">{r.screen}</td>
+                <td className="px-5 py-3 text-gray-500">{r.state}</td>
+                <td className="px-5 py-3">{r.action}</td>
+                <td className="px-5 py-3 text-gray-700">{r.result}</td>
+                <td className="px-5 py-3">
+                  {r.next !== '-' ? (
+                    <a href={r.next} className="text-blue-600 hover:underline font-mono text-xs">{r.next}</a>
+                  ) : <span className="text-gray-300">—</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+/* ════════════════════════════════════════════════════════════════
+   UI-90.03  NotificationFlowPage  /ui-flow/notification
+════════════════════════════════════════════════════════════════ */
+export const NotificationFlowPage: React.FC = () => {
+  const steps = [
+    {
+      icon: '🏢',
+      actor: '機構管理員',
+      action: '搜尋案件飼主',
+      desc: '在「聯絡通知中心」搜尋關聯案件，選擇飼主並選取通知模板',
+      link: '/organization/contacts',
+      linkLabel: '前往 UI-04.09',
+      color: '#0F6B5B',
+    },
+    {
+      icon: '✍️',
+      actor: '機構管理員',
+      action: '撰寫通知內容',
+      desc: '選擇類別（回訪聯繫 / 補件提醒 / 健康提醒），填寫主旨與內容，選擇是否 Email 副本',
+      link: '/organization/messages/new',
+      linkLabel: '前往 UI-04.10',
+      color: '#0F6B5B',
+    },
+    {
+      icon: '👁',
+      actor: '機構管理員',
+      action: '發送前預覽確認',
+      desc: '完整預覽通知內容，確認無誤後按「確認發送」',
+      link: '/organization/messages/confirm',
+      linkLabel: '前往 UI-04.11',
+      color: '#0F6B5B',
+    },
+    {
+      icon: '📨',
+      actor: '系統',
+      action: '發送通知 & 寫入紀錄',
+      desc: '通知同步寫入飼主端收件匣（MSG-NNN），稽核日誌記錄操作，狀態：已發送',
+      link: '/organization/messages/history',
+      linkLabel: '前往 UI-04.12',
+      color: '#64748b',
+    },
+    {
+      icon: '📬',
+      actor: '飼主',
+      action: '查看收件匣',
+      desc: '在「機構通知」收件匣中看到新通知，點擊查看詳情',
+      link: '/care/messages',
+      linkLabel: '前往 UI-03.14',
+      color: '#1565C0',
+    },
+    {
+      icon: '📄',
+      actor: '飼主',
+      action: '閱讀通知詳情',
+      desc: '看到完整通知內容，確認收到並選擇是否回覆',
+      link: '/care/messages/MSG-008',
+      linkLabel: '前往 UI-03.15',
+      color: '#1565C0',
+    },
+    {
+      icon: '💬',
+      actor: '飼主',
+      action: '送出回覆',
+      desc: '填寫回覆內容後送出，狀態更新為「已回覆」，機構端即時同步',
+      link: '/care/messages/MSG-008/reply',
+      linkLabel: '前往 UI-03.16',
+      color: '#1565C0',
+    },
+    {
+      icon: '✅',
+      actor: '機構管理員',
+      action: '查看回覆 & 標記已處理',
+      desc: '在對話詳情頁看到飼主回覆，確認後點「標記已處理」，結案',
+      link: '/organization/messages/MSG-008',
+      linkLabel: '前往 UI-04.13',
+      color: '#0F6B5B',
+    },
+  ];
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-8">
+      <div>
+        <h1 className="text-3xl font-extrabold text-slate-900">UI-90.03 機構通知互動流程</h1>
+        <p className="text-gray-500 mt-1">完整雙向通知流程：機構發送 → 飼主收讀回覆 → 機構確認處理</p>
+      </div>
+
+      <div className="relative">
+        {/* vertical line */}
+        <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-slate-200" />
+
+        <div className="space-y-6">
+          {steps.map((step, i) => (
+            <div key={i} className="relative flex items-start gap-6">
+              {/* circle */}
+              <div className="relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm border-4 border-white" style={{ backgroundColor: `${step.color}20`, borderColor: step.color }}>
+                {step.icon}
+              </div>
+              <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: step.color }}>
+                      Step {i + 1}  ·  {step.actor}
+                    </div>
+                    <div className="font-bold text-slate-900 text-base">{step.action}</div>
+                    <div className="text-sm text-gray-500 mt-1 leading-relaxed">{step.desc}</div>
+                  </div>
+                  <a href={step.link} className="ml-4 shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold text-white hover:opacity-80 transition-opacity" style={{ backgroundColor: step.color }}>
+                    {step.linkLabel}
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};

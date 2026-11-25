@@ -1,92 +1,181 @@
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
+import { ToastProvider } from './components/common/ToastContext';
 import { PawLinkProvider } from './context/PawLinkContext';
+
+// System & Auth
 import { LoginPage, NotificationsPage, OrgLoginPage, RegisterSetupPage } from './pages/AuthPages';
 import { HomePage } from './pages/HomePage';
-import { DesignSystemPage, OverviewPage } from './pages/SystemPages';
+import { DesignSystemPage, FlowsPage, NotificationFlowPage, OverviewPage, RulesPage } from './pages/SystemPages';
 import { ZoneStubPage } from './pages/ZoneStubPage';
+
+// Adopt browse
+import {
+  AdoptListPage,
+  AdoptSearchPage,
+  FavoritesPage,
+  PetDetailPage,
+} from './pages/adopt/AdoptBrowsePages';
+
+// Adopt apply
+import {
+  AdoptApplyContactPage,
+  AdoptApplyContractPage,
+  AdoptApplyEducationPage,
+  AdoptApplyEnvironmentPage,
+  AdoptApplyHandoverPage,
+  AdoptApplyKycPage,
+  AdoptApplyOverviewPage,
+  MyApplicationsPage,
+} from './pages/adopt/AdoptApplyPages';
+
+// Rehome
+import {
+  MyRehomeCasesPage,
+  RehomeBasicPage,
+  RehomeHealthPage,
+  RehomeIntroPage,
+  RehomeManagePage,
+  RehomeMediaPage,
+  RehomePreviewPage,
+} from './pages/adopt/RehomePages';
+
+// Care dashboard & log
+import {
+  CareDashboardPage,
+  DailyLogHistoryPage,
+  DailyLogNewPage,
+} from './pages/care/CareDashboardAndLogPages';
+
+// Care health & score
+import {
+  CarePointsPage,
+  CareScorePage,
+  HealthRecordsPage,
+  MedicalNewPage,
+} from './pages/care/CareHealthAndScorePages';
+
+// Care rewards & alerts
+import {
+  CareAlertsPage,
+  CarePetsPage,
+  CareReportsPage,
+  RewardsConfirmPage,
+  RewardsListPage,
+  RewardsResultPage,
+} from './pages/care/CareRewardsAndAlertsPages';
+
+// Care messages
+import {
+  CareMessageDetailPage,
+  CareMessageReplyPage,
+  CareMessagesInboxPage,
+} from './pages/care/CareMessagesPages';
+
+// Org pages
+import {
+  OrgContactsPage,
+  OrgDashboardPage,
+  OrgFollowupDetailPage,
+  OrgFollowupsPage,
+  OrgKycPage,
+  OrgMessageConfirmPage,
+  OrgMessageDetailPage,
+  OrgMessageHistoryPage,
+  OrgMessageNewPage,
+  OrgPermissionsPage,
+  OrgRehomeReviewPage,
+  OrgSyncPage,
+} from './pages/org/OrgPages';
 
 export const App: React.FC = () => {
   return (
     <PawLinkProvider>
-      <BrowserRouter>
-        <AppLayout>
-          <Routes>
-            {/* 00 & 90 System & Flow Docs */}
-            <Route path="/overview" element={<OverviewPage />} />
-            <Route path="/design-system" element={<DesignSystemPage />} />
-            <Route path="/flows" element={<ZoneStubPage />} />
-            <Route path="/rules" element={<ZoneStubPage />} />
-            <Route path="/ui-flow/notification" element={<ZoneStubPage />} />
+      <ToastProvider>
+        <BrowserRouter>
+          <AppLayout>
+            <Routes>
+              {/* ── 00 & 90 System / Flow Docs ─────────────────────── */}
+              <Route path="/overview" element={<OverviewPage />} />
+              <Route path="/design-system" element={<DesignSystemPage />} />
+              <Route path="/flows" element={<FlowsPage />} />
+              <Route path="/rules" element={<RulesPage />} />
+              <Route path="/ui-flow/notification" element={<NotificationFlowPage />} />
 
-            {/* 01 Shared Portal */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/account/setup" element={<RegisterSetupPage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
+              {/* ── 01 Shared Portal ───────────────────────────────── */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/account/setup" element={<RegisterSetupPage />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
 
-            {/* 02 Adoption & Private Rehome Zone */}
-            <Route path="/adopt" element={<ZoneStubPage />} />
-            <Route path="/adopt/search" element={<ZoneStubPage />} />
-            <Route path="/adopt/pet/:petId" element={<ZoneStubPage />} />
-            <Route path="/adopt/favorites" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/contact" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/kyc" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/environment" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/education" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/contract" element={<ZoneStubPage />} />
-            <Route path="/adopt/apply/:petId/handover" element={<ZoneStubPage />} />
-            <Route path="/adopt/applications" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/basic" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/health" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/media" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/preview" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/cases" element={<ZoneStubPage />} />
-            <Route path="/adopt/rehome/manage" element={<ZoneStubPage />} />
+              {/* ── 02 Adoption & Private Rehome ───────────────────── */}
+              <Route path="/adopt" element={<AdoptListPage />} />
+              <Route path="/adopt/search" element={<AdoptSearchPage />} />
+              <Route path="/adopt/pet/:petId" element={<PetDetailPage />} />
+              <Route path="/adopt/favorites" element={<FavoritesPage />} />
 
-            {/* 03 Care Tracking Zone */}
-            <Route path="/care/dashboard" element={<ZoneStubPage />} />
-            <Route path="/care/log/new" element={<ZoneStubPage />} />
-            <Route path="/care/log/history" element={<ZoneStubPage />} />
-            <Route path="/care/health" element={<ZoneStubPage />} />
-            <Route path="/care/medical/new" element={<ZoneStubPage />} />
-            <Route path="/care/score" element={<ZoneStubPage />} />
-            <Route path="/care/points" element={<ZoneStubPage />} />
-            <Route path="/care/alerts" element={<ZoneStubPage />} />
-            <Route path="/care/reports" element={<ZoneStubPage />} />
-            <Route path="/care/pets" element={<ZoneStubPage />} />
-            <Route path="/care/rewards" element={<ZoneStubPage />} />
-            <Route path="/care/rewards/confirm" element={<ZoneStubPage />} />
-            <Route path="/care/rewards/result" element={<ZoneStubPage />} />
-            <Route path="/care/messages" element={<ZoneStubPage />} />
-            <Route path="/care/messages/:msgId" element={<ZoneStubPage />} />
-            <Route path="/care/messages/:msgId/reply" element={<ZoneStubPage />} />
+              {/* Apply steps */}
+              <Route path="/adopt/apply/:petId" element={<AdoptApplyOverviewPage />} />
+              <Route path="/adopt/apply/:petId/contact" element={<AdoptApplyContactPage />} />
+              <Route path="/adopt/apply/:petId/kyc" element={<AdoptApplyKycPage />} />
+              <Route path="/adopt/apply/:petId/environment" element={<AdoptApplyEnvironmentPage />} />
+              <Route path="/adopt/apply/:petId/education" element={<AdoptApplyEducationPage />} />
+              <Route path="/adopt/apply/:petId/contract" element={<AdoptApplyContractPage />} />
+              <Route path="/adopt/apply/:petId/handover" element={<AdoptApplyHandoverPage />} />
+              <Route path="/adopt/applications" element={<MyApplicationsPage />} />
 
-            {/* 04 Organization Management Zone */}
-            <Route path="/organization/login" element={<OrgLoginPage />} />
-            <Route path="/organization" element={<ZoneStubPage />} />
-            <Route path="/organization/kyc" element={<ZoneStubPage />} />
-            <Route path="/organization/rehome-review" element={<ZoneStubPage />} />
-            <Route path="/organization/followups" element={<ZoneStubPage />} />
-            <Route path="/organization/followups/:caseId" element={<ZoneStubPage />} />
-            <Route path="/organization/sync" element={<ZoneStubPage />} />
-            <Route path="/organization/permissions" element={<ZoneStubPage />} />
-            <Route path="/organization/contacts" element={<ZoneStubPage />} />
-            <Route path="/organization/messages/new" element={<ZoneStubPage />} />
-            <Route path="/organization/messages/confirm" element={<ZoneStubPage />} />
-            <Route path="/organization/messages/history" element={<ZoneStubPage />} />
-            <Route path="/organization/messages/:msgId" element={<ZoneStubPage />} />
+              {/* Rehome steps */}
+              <Route path="/adopt/rehome" element={<RehomeIntroPage />} />
+              <Route path="/adopt/rehome/basic" element={<RehomeBasicPage />} />
+              <Route path="/adopt/rehome/health" element={<RehomeHealthPage />} />
+              <Route path="/adopt/rehome/media" element={<RehomeMediaPage />} />
+              <Route path="/adopt/rehome/preview" element={<RehomePreviewPage />} />
+              <Route path="/adopt/rehome/cases" element={<MyRehomeCasesPage />} />
+              <Route path="/adopt/rehome/manage" element={<RehomeManagePage />} />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </AppLayout>
-      </BrowserRouter>
+              {/* ── 03 Care Tracking ───────────────────────────────── */}
+              <Route path="/care/dashboard" element={<CareDashboardPage />} />
+              <Route path="/care/log/new" element={<DailyLogNewPage />} />
+              <Route path="/care/log/history" element={<DailyLogHistoryPage />} />
+              <Route path="/care/health" element={<HealthRecordsPage />} />
+              <Route path="/care/medical/new" element={<MedicalNewPage />} />
+              <Route path="/care/score" element={<CareScorePage />} />
+              <Route path="/care/points" element={<CarePointsPage />} />
+              <Route path="/care/alerts" element={<CareAlertsPage />} />
+              <Route path="/care/reports" element={<CareReportsPage />} />
+              <Route path="/care/pets" element={<CarePetsPage />} />
+              {/* Rewards — specific before dynamic */}
+              <Route path="/care/rewards/confirm" element={<RewardsConfirmPage />} />
+              <Route path="/care/rewards/result" element={<RewardsResultPage />} />
+              <Route path="/care/rewards" element={<RewardsListPage />} />
+              {/* Messages — specific before dynamic */}
+              <Route path="/care/messages/:msgId/reply" element={<CareMessageReplyPage />} />
+              <Route path="/care/messages/:msgId" element={<CareMessageDetailPage />} />
+              <Route path="/care/messages" element={<CareMessagesInboxPage />} />
+
+              {/* ── 04 Organization Management ─────────────────────── */}
+              <Route path="/organization/login" element={<OrgLoginPage />} />
+              <Route path="/organization" element={<OrgDashboardPage />} />
+              <Route path="/organization/kyc" element={<OrgKycPage />} />
+              <Route path="/organization/rehome-review" element={<OrgRehomeReviewPage />} />
+              <Route path="/organization/followups" element={<OrgFollowupsPage />} />
+              <Route path="/organization/followups/:caseId" element={<OrgFollowupDetailPage />} />
+              <Route path="/organization/sync" element={<OrgSyncPage />} />
+              <Route path="/organization/permissions" element={<OrgPermissionsPage />} />
+              <Route path="/organization/contacts" element={<OrgContactsPage />} />
+              <Route path="/organization/messages/new" element={<OrgMessageNewPage />} />
+              <Route path="/organization/messages/confirm" element={<OrgMessageConfirmPage />} />
+              {/* specific before dynamic */}
+              <Route path="/organization/messages/history" element={<OrgMessageHistoryPage />} />
+              <Route path="/organization/messages/:msgId" element={<OrgMessageDetailPage />} />
+
+              {/* Fallback */}
+              <Route path="*" element={<ZoneStubPage />} />
+            </Routes>
+          </AppLayout>
+        </BrowserRouter>
+      </ToastProvider>
     </PawLinkProvider>
   );
 };
-
-export default App;
