@@ -676,9 +676,9 @@ export const OrgContactsPage: React.FC = () => {
 
   const handleCompose = (fc: FollowUpCaseType, category: '回訪聯繫' | '補件提醒' | '健康提醒') => {
     setMessageDraft({
-      toOwnerId: 'owner-001',
-      toOwnerName: fc.ownerDisplayName,
+      ownerDisplayName: fc.ownerDisplayName,
       caseId: fc.caseId,
+      petId: fc.petId,
       petName: fc.petName,
       category,
       subject: `【${category}】${fc.petName} - ${fc.caseId}`,
@@ -736,9 +736,9 @@ export const OrgContactsPage: React.FC = () => {
           {(['回訪聯繫', '補件提醒', '健康提醒'] as const).map(cat => (
             <button key={cat} onClick={() => {
               setMessageDraft({
-                toOwnerId: 'owner-001',
-                toOwnerName: '（請先選擇案件）',
+                ownerDisplayName: '（請先選擇案件）',
                 caseId: '',
+                petId: '',
                 petName: '',
                 category: cat,
                 subject: `【${cat}】`,
@@ -779,9 +779,9 @@ export const OrgMessageNewPage: React.FC = () => {
       return;
     }
     setMessageDraft({
-      toOwnerId: draft?.toOwnerId || 'owner-001',
-      toOwnerName: draft?.toOwnerName || '（未選擇）',
+      ownerDisplayName: draft?.ownerDisplayName || '（未選擇）',
       caseId: draft?.caseId || '',
+      petId: draft?.petId || '',
       petName: draft?.petName || '',
       category,
       subject,
@@ -813,7 +813,7 @@ export const OrgMessageNewPage: React.FC = () => {
         <div className="p-4 bg-[#E8F5F2] rounded-xl text-sm">
           <div className="font-semibold text-[#0F6B5B]">收件人資訊</div>
           <div className="text-gray-700 mt-1">
-            飼主：{draft?.toOwnerName || '（未選擇）'}
+            飼主：{draft?.ownerDisplayName || '（未選擇）'}
             {draft?.petName && <>  |  毛孩：{draft.petName}</>}
             {draft?.caseId && <>  |  案件：{draft.caseId}</>}
           </div>
@@ -907,7 +907,7 @@ export const OrgMessageConfirmPage: React.FC = () => {
         <div className="border-b border-gray-100 pb-4">
           <div className="flex justify-between text-sm">
             <span className="text-gray-500">收件人</span>
-            <span className="font-semibold">{draft.toOwnerName}</span>
+            <span className="font-semibold">{draft.ownerDisplayName}</span>
           </div>
           <div className="flex justify-between text-sm mt-1">
             <span className="text-gray-500">類別</span>
@@ -966,10 +966,10 @@ export const OrgMessageHistoryPage: React.FC = () => {
                 </div>
                 <div className="font-bold text-gray-900">{msg.subject}</div>
                 <div className="text-sm text-gray-500 mt-1">
-                  收件人：{msg.toOwnerName}  |  類別：{msg.category}  |  {msg.sentAt}
+                  收件人：{msg.ownerDisplayName}  |  類別：{msg.category}  |  {msg.createdAt}
                 </div>
-                {msg.thread.length > 1 && (
-                  <div className="text-xs text-[#0F6B5B] mt-1">{msg.thread.length} 則對話</div>
+                {msg.entries.length > 1 && (
+                  <div className="text-xs text-[#0F6B5B] mt-1">{msg.entries.length} 則對話</div>
                 )}
               </div>
               <Link to={`/organization/messages/${msg.id}`} className="flex items-center gap-1 px-4 py-2 bg-[#0F6B5B] text-white text-sm font-semibold rounded-xl hover:bg-[#0A4D41] transition-colors ml-4">
@@ -1033,7 +1033,7 @@ export const OrgMessageDetailPage: React.FC = () => {
           <div className="flex items-center gap-3 mt-2">
             <StatusBadge status={msg.deliveryStatus} />
             <StatusBadge status={msg.replyStatus} />
-            <span className="text-sm text-gray-400">{msg.sentAt}</span>
+            <span className="text-sm text-gray-400">{msg.createdAt}</span>
           </div>
         </div>
         {msg.replyStatus !== '已處理' && (
@@ -1045,13 +1045,13 @@ export const OrgMessageDetailPage: React.FC = () => {
 
       <div className="bg-white rounded-2xl border border-[#0F6B5B]/20 shadow-sm overflow-hidden">
         <div className="px-6 py-4 bg-[#E8F5F2] border-b border-[#0F6B5B]/20">
-          <span className="font-bold text-[#0F6B5B]">對話紀錄（{msg.thread.length}）</span>
+          <span className="font-bold text-[#0F6B5B]">對話紀錄（{msg.entries.length}）</span>
         </div>
         <div className="p-6 space-y-4">
-          {msg.thread.map((entry, i) => (
+          {msg.entries.map((entry, i) => (
             <div key={i} className={`flex ${entry.sender === 'org' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-md rounded-2xl px-5 py-3 ${entry.sender === 'org' ? 'bg-[#0F6B5B] text-white' : 'bg-gray-100 text-gray-800'}`}>
-                <div className="text-xs opacity-70 mb-1">{entry.sender === 'org' ? '機構' : '飼主'}  ·  {entry.time}</div>
+                <div className="text-xs opacity-70 mb-1">{entry.sender === 'org' ? '機構' : '飼主'}  ·  {entry.timestamp}</div>
                 <div className="text-sm leading-relaxed">{entry.content}</div>
               </div>
             </div>
