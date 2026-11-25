@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import { AppLayout } from './components/layout/AppLayout';
 import { ToastProvider } from './components/common/ToastContext';
 import { PawLinkProvider } from './context/PawLinkContext';
@@ -93,7 +93,7 @@ export const App: React.FC = () => {
   return (
     <PawLinkProvider>
       <ToastProvider>
-        <BrowserRouter>
+        <HashRouter>
           <AppLayout>
             <Routes>
               {/* ── 00 & 90 System / Flow Docs ─────────────────────── */}
@@ -174,7 +174,7 @@ export const App: React.FC = () => {
               <Route path="*" element={<ZoneStubPage />} />
             </Routes>
           </AppLayout>
-        </BrowserRouter>
+        </HashRouter>
       </ToastProvider>
     </PawLinkProvider>
   );
